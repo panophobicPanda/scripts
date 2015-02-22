@@ -1,5 +1,9 @@
 #!/bin/bash
+# example of a custom nagios check
+# bsmith@the408.com
+#
 #this will test the ability of a given sid and namespace to axl lock on a CC node
+# 
 
 #this SID will be used for the test
 sid=p4a5
