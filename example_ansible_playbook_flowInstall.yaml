@@ -1,0 +1,118 @@
+---
+- hosts: flow-p14
+  sudo: True
+  user: ops
+  vars:
+    pkg_mgr: ${ansible_pkg_mgr}
+    namespaces: [ namespace13, namespace14 ]
+    zpools: [ zpool13, zpool14 ]
+    namespaces_root: [ nodrootdev-ns13, nodrootdev-ns13 ]
+    compute_nodes: [ sjc-nod81, sjc-nod82, sjc-nod83, sjc-nod84, sjc-nod85, sjc-nod86, sjc-nod87, sjc-nod88, sjc-nod89, sjc-nod90, sjc-nod91, sjc-nod92, sjc-nod93, sjc-nod94, sjc-nod95, sjc-nod96, sjc-nod97, sjc-nod98, sjc-nod99, sjc-nod100 ]
+  tasks:
+  - name: apt-get update
+    command: apt-get update
+
+  - name: apt-get upgrade
+    command: apt-get -y upgrade
+
+  - name: ensure packages are installed
+    action: $pkg_mgr name={{ item }} state=latest
+    with_items:
+    - autofs
+    - tftpd-hpa
+    - ntp
+    - ntpdate
+    - isc-dhcp-server
+    - nfs-kernel-server
+    - haproxy
+    - vim
+    - ethtool
+    - rsync
+    - hatop
+    - nis
+    - socat
+    - collectd
+    - vim
+    - ntpdate
+
+  - name: deploy exports file for NFS server
+    copy: src=./exports dest=/etc/
+    notify:
+    - restart nfs-kernel-server
+
+  - name: deploy dhcpd.conf file for dhcp server
+    copy: src=./dhcpd.conf dest=/etc/dhcp/
+    notify:
+    - restart isc-dhcp-server
+
+  - name: deploy tftpd-hpa default file
+    copy: src=./tftpd-hpa dest=/etc/default/
+    notify:
+    - restart tftpd-hpa
+
+  - name: deploy haproxy default file
+    copy: src=./haproxy dest=/etc/default/
+
+  - name: deploy startup files for haproxys
+    copy: src=./haproxy-{{ item }} dest=/etc/init.d/ mode=0755
+    with_items:
+    - "{{ namespaces }}"
+
+  - name: deploy config files for haproxys
+    copy: src=./haproxy-{{ item }}.cfg dest=/etc/haproxy/
+    with_items:
+    - "{{ namespaces }}"
+
+  - name: start haproxys
+    command: /etc/init.d/haproxy-{{ item }} restart
+    with_items:
+    - "{{ namespaces }}"
+
+  - name: make nfs directory
+    file: path=/nfs state=directory mode=0777
+
+  - name: make /srv/tftp directory
+    file: path=/srv/tftp state=directory mode=0777
+
+  - name: make /usr/local/axcient directory
+    file: path=/usr/local/axcient state=directory mode=0777
+
+  - name: make noddata parent directories
+    file: path=/nfs/noddata/{{ item }} state=directory
+    with_items:
+    - "{{ compute_nodes }}"
+
+  - name: make noddata log directories
+    file: path=/nfs/noddata/{{ item }}/log state=directory
+    with_items:
+    - "{{ compute_nodes }}"
+
+  - name: make noddata work directories
+    file: path=/nfs/noddata/{{ item }}/work state=directory
+    with_items:
+    - "{{ compute_nodes }}"
+
+  - name: copy axlockd startup file
+    copy: src=./axlockd dest=/etc/init.d/ mode=0755
+
+  - name: copy /usr/local/axcient for axlockd 
+    synchronize: src=./usr_local_axcient/ dest=/usr/local/axcient/ times=no group=no perms=no
+
+  - name: copy nodrootdev directories
+    synchronize: src=./nfs/{{ item }} dest=/nfs/
+    with_items:
+    - "{{ namespaces_root }}"
+
+  - name: copy /srv for tftp 
+    synchronize: src=./srv/ dest=/srv/ times=no group=no perms=no
+
+
+  handlers:
+  - name: restart nfs-kernel-server
+    service: name=nfs-kernel-server state=restarted
+
+  - name: restart isc-dhcp-server
+    service: name=isc-dhcp-server state=restarted
+
+  - name: restart tftpd-hpa
+    service: name=tftpd-hpa state=restarted
