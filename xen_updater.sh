@@ -2,6 +2,7 @@
 #
 # bsmith@the408.com 2014-01-14
 #
+#
 #This script takes two arguements, the source folder of all the updates and the xenserver you want to patch
 #e.g. xen_updater.sh ~/Downloads/xen_updates 172.20.10.74
 
