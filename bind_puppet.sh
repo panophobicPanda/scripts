@@ -2,7 +2,7 @@
 #This script will quickly bind a puppet client to a puppet server.
 #Run this script on the puppet server
 #
-# Brian Smith May 2013 Axcient Inc
+# bsmith@the408.com 2013-05-13
 #
 #USAGE - superPuppetClientBind.sh <FQDN>
 #EXAMPLE - ./superPuppetClientBind.sh reportdb1.qa.qualys.com
@@ -11,7 +11,7 @@
 username=root
 #at the moment this script only works using Root
 #
-puppetServer=sjc-puppetmaster01.axdc.lan
+puppetServer=sjc-puppetmaster01.test.lan
 ntpServer=10.1.2.10
 #
 #first lets make sure an argument is provided
