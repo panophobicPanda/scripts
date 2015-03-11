@@ -5,13 +5,13 @@
 # https://github.com/akabdog/scripts/edit/master/kibana4_init
 #
 ### BEGIN INIT INFO
-# Provides:          kibana4
+# Provides:          kibana4_init
 # Required-Start:    $network $remote_fs $named
 # Required-Stop:     $network $remote_fs $named
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Starts kibana4
-# Description:       Starts kibana4 using start-stop-daemon
+# Short-Description: Starts kibana4_init
+# Description:       Starts kibana4_init using start-stop-daemon
 ### END INIT INFO
 
 #configure this with wherever you unpacked kibana:
