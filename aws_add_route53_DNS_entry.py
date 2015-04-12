@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #brian.smith@the408.com 2015-03-27
+#https://github.com/akabdog/scripts
 #define your PROFILE in ~/.boto like this:
 #[profile aws-prod]
 #aws_access_key_id = ****
