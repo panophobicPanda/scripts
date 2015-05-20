@@ -22,6 +22,7 @@ PID_FILE=/var/run/$NAME.pid
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:$KIBANA_BIN
 DAEMON=$KIBANA_BIN/kibana
 DESC="Kibana4"
+USER=nobody
 
 if [ `id -u` -ne 0 ]; then
 	echo "You need root privileges to run this script"
@@ -46,14 +47,14 @@ case "$1" in
 	fi
 
 	# Start Daemon
-	start-stop-daemon --start --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
+	start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
 	log_end_msg $?
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC"
 
 	if [ -f "$PID_FILE" ]; then
-		start-stop-daemon --stop --pidfile "$PID_FILE" \
+		start-stop-daemon --stop --user "$USER" -c "$USER" --pidfile "$PID_FILE" \
 			--retry=TERM/20/KILL/5 >/dev/null
 		if [ $? -eq 1 ]; then
 			log_progress_msg "$DESC is not running but pid file exists, cleaning up"
