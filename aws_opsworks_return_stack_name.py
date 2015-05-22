@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#brian.smith@the408.com 2015-04-06
+#https://github.com/akabdog 2015-04-06
 
 import json
 import glob
