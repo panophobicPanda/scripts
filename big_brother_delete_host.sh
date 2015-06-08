@@ -4,7 +4,8 @@
 #
 #In Summary: this script takes a single arguement, the host you want deleted from big brother
 # WARNING: if no arguement is passed, all historical data will be deleted - this is a feature, not a bug.
-#Brian Smith December 2011 Qualys
+# December 2011
+# https://github.com/akabdog
 #
 rm -rf /home/bb/bbvar/logs/$1*
 echo  /home/bb/bbvar/logs/$1*

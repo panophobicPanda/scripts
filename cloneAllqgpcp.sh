@@ -1,6 +1,6 @@
 #!/bin/bash
 # this machine will clone and migrate all VMs from the answer file vmNames.txt
-# bsmith@the408.com 2012
+# https://github.com/akabdog 2012
 #
 API_User=bsmith
 API_Password=

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# bsmith@the408.com 2014-01-14
+# https://github.com/akabdog 2014-01-14
 #
 #
 #This script takes two arguements, the source folder of all the updates and the xenserver you want to patch

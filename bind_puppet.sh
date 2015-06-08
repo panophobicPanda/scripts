@@ -2,10 +2,10 @@
 #This script will quickly bind a puppet client to a puppet server.
 #Run this script on the puppet server
 #
-# bsmith@the408.com 2013-05-13
+# https://github.com/akabdog 2013-05-13
 #
 #USAGE - superPuppetClientBind.sh <FQDN>
-#EXAMPLE - ./superPuppetClientBind.sh reportdb1.qa.qualys.com
+#EXAMPLE - ./superPuppetClientBind.sh reportdb1.qa.com
 #
 #USER CONFIGURABLE VALUES
 username=root
@@ -57,6 +57,6 @@ exit
 else
         echo "No arguement provided"
         echo "USAGE - superPuppetClientBind.sh <FQDN>
-EXAMPLE - ./superPuppetClientBind.sh reportdb1.qa.qualys.com"
+EXAMPLE - ./superPuppetClientBind.sh reportdb1.qa.com"
 fi
 #

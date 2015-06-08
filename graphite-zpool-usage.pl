@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-#bsmith@the408.com August 2013
+# https://github.com/akabdog August 2013
 #this script started with the one from https://github.com/tomdc/graphite-zpool/blob/master/zpool_iostat.pl but hardly resembles it now
 
 # Pushes zpool metrics to carbon: disk usage of zpool 

@@ -1,4 +1,5 @@
 #!/bin/bash
+# https://github.com/akabdog
 
 vmName=$1
 xenServer=sjc-xen-p1
