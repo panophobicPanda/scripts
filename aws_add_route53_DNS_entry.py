@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#brian.smith@the408.com 2015-03-27
+# 2015-03-27
 #https://github.com/akabdog/scripts
 #define your PROFILE in ~/.boto like this:
 #[profile aws-prod]
@@ -16,11 +16,11 @@ import time
 PROFILE = "aws-prod"
 #
 #zone to connect to:
-ZONE = "healthfidelity.com."
+ZONE = "the408.com."
 #dns record to be created:
 RECORD_TYPE = "CNAME"
-DNS_NAME = "preprod-hccscout.healthfidelity.com."
-DNS_VALUE = "ops-ca-preprod-reveal-2032983148.us-west-1.elb.amazonaws.com"
+DNS_NAME = "f.the408.com."
+DNS_VALUE = "load-balancer.the408.com"
 #
 #####</USER CONFIGURABLE VARIABLES>#####
 
