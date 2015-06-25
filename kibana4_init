@@ -37,34 +37,38 @@ fi
 
 case "$1" in
   start)
-	log_daemon_msg "Starting $DESC"
+        log_daemon_msg "Starting $DESC"
 
-	pid=`pidofproc -p $PID_FILE kibana`
-	if [ -n "$pid" ] ; then
-		log_begin_msg "Already running."
-		echo "Already running."
-		log_end_msg 0
-		exit 0
-	fi
+        pid=`pidofproc -p $PID_FILE kibana`
+        if [ -n "$pid" ] ; then
+                log_begin_msg "Already running."
+                echo "Already running."
+                log_end_msg 0
+                exit 0
+        fi
 
-	# Check if elasticsearch is up:
-	elasticsearchDOWN=true
-	while $elasticsearchDOWN; do
-		response=`curl 'http://localhost:9200'`
+        # Check if elasticsearch is up:
+        elasticsearchDOWN=true
+        timer=1
+        # Attempt to start, wait for elasticsearch, if it doesn't complete in 300 seconds (30*10), exit
+        while [ "$elasticsearchDOWN" = true ] && [ $timer -lt 10 ]; do
+                response=`curl 'http://localhost:9200'`
 
-		if (echo "$response" | grep -e "\"status\" : 200"); then 
-		# Start Daemon
-			start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
-			elasticsearchDOWN=false	
-		else
-			log_begin_msg "Elasticsearch not running, waiting..."
-			echo "Elasticsearch not running, waiting..."
-			log_end_msg 0
-			sleep 10
-		fi
-	done	
-	log_end_msg $?
-	;;
+                if (echo "$response" | grep -e "\"status\" : 200"); then
+                # Start Daemon
+                        elasticsearchDOWN=false
+                        start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
+                        echo $elasticsearchDOWN
+                else
+                        log_begin_msg "Elasticsearch not running, waiting..."
+                        echo "Elasticsearch not running, waiting..."
+                        log_end_msg 0
+                        sleep 10
+                fi
+                timer=$((timer+1))
+        done
+        log_end_msg $?
+        ;;
   stop)
 	log_daemon_msg "Stopping $DESC"
 
