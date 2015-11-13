@@ -53,9 +53,9 @@ case "$1" in
         timer=1
         # Attempt to start, wait for elasticsearch, if it doesn't complete in 300 seconds (30*10), exit
         while [ "$elasticsearchDOWN" = true ] && [ $timer -lt 10 ]; do
-                response=$(curl "http://$ES_HOST:9200")
+                response=$(curl -I "http://$ES_HOST:9200")
 
-                if (echo "$response" | grep -e "\"status\" : 200"); then
+                if (echo "$response" | grep -e "200 OK"); then
                 # Start Daemon
                         elasticsearchDOWN=false
                         start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
