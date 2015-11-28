@@ -22,6 +22,7 @@ PID_FILE=/var/run/$NAME.pid
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:$KIBANA_BIN
 DAEMON=$KIBANA_BIN/kibana
 DESC="Kibana4"
+#you will need to chown -R your kibana directory with this user!
 USER=nobody
 ES_HOST="localhost"
 
