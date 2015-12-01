@@ -60,10 +60,10 @@ case "$1" in
                 # Start Daemon
                         elasticsearchDOWN=false
                         start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
-                        echo $elasticsearchDOWN
+                        echo "Is elasticsearch down? $elasticsearchDOWN"
                 else
                         log_begin_msg "Elasticsearch not running, waiting..."
-                        echo "Elasticsearch not running, waiting..."
+                        echo "Elasticsearch not running, waiting 10 seconds..."
                         log_end_msg 0
                         sleep 10
                 fi
