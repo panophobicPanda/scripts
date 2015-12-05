@@ -2,6 +2,7 @@
 #
 # /etc/init.d/kibana4_init -- startup script for kibana4
 # bsmith@the408.com 2015-02-20; used elasticsearch init script as template
+# updated 2015-12-04
 # https://github.com/akabdog/scripts/edit/master/kibana4_init
 #
 ### BEGIN INIT INFO
@@ -22,7 +23,6 @@ PID_FILE=/var/run/$NAME.pid
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:$KIBANA_BIN
 DAEMON=$KIBANA_BIN/kibana
 DESC="Kibana4"
-#you will need to chown -R your kibana directory with this user!
 USER=nobody
 ES_HOST="localhost"
 
@@ -54,18 +54,18 @@ case "$1" in
         timer=1
         # Attempt to start, wait for elasticsearch, if it doesn't complete in 300 seconds (30*10), exit
         while [ "$elasticsearchDOWN" = true ] && [ $timer -lt 10 ]; do
-                response=$(curl -I "http://$ES_HOST:9200")
+                response=$(curl -sLI "http://$ES_HOST:9200")
 
-                if (echo "$response" | grep -e "200 OK"); then
-                # Start Daemon
-                        elasticsearchDOWN=false
-                        start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
-                        echo "Is elasticsearch down? $elasticsearchDOWN"
-                else
+                if [ -z "$response" ]; then
                         log_begin_msg "Elasticsearch not running, waiting..."
                         echo "Elasticsearch not running, waiting 10 seconds..."
                         log_end_msg 0
                         sleep 10
+		else
+                # Start Daemon
+                        elasticsearchDOWN=false
+                        start-stop-daemon --start --user "$USER" -c "$USER" --pidfile "$PID_FILE" --make-pidfile --background --exec $DAEMON
+                        echo "Is elasticsearch down? $elasticsearchDOWN"
                 fi
                 timer=$((timer+1))
         done
