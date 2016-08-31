@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # /etc/init.d/kibana4_init -- startup script for kibana4
-# bsmith@the408.com 2015-02-20; used elasticsearch init script as template
+# 2015-02-20; used elasticsearch init script as template
 # https://github.com/akabdog/scripts/edit/master/kibana4_init
 #
 ### BEGIN INIT INFO
